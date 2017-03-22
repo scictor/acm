@@ -1,11 +1,3 @@
-#include <iostream>
-#include <algorithm>
-#include <vector>
-#include <string>
-#include <cctype>
-#include <unordered_map>
-#include <tuple>
-using namespace std;
 class Solution {
 public:
     int fourSumCount(vector<int>& A, vector<int>& B, vector<int>& C, vector<int>& D) {
@@ -33,13 +25,26 @@ public:
         return result.size();
     }
 };
-int main()
-{
-    int a[] = {1,2,3,4,5};
-    cout << binary_search(a,a+5,7);
-    vector<int> vt(a,a+5);
-    tuple<int,char,string> mtp(1,'v',"tupletest");
 
-    std::cout  << std::get<2>(mtp) <<"\n "<< tuple_size<decltype(mtp)>::value << '\n';
-}
-
+//a better method by freeprogrammer https://discuss.leetcode.com/topic/78430/concise-c-11-code-beat-99-5
+ class Solution {
+public:
+      int fourSumCount(vector<int>& A, vector<int>& B, vector<int>& C, vector<int>& D) {
+        unordered_map<int, int>  abSum;
+        for(auto a : A) {
+            for(auto b : B) {
+                ++abSum[a+b];
+            }
+        }
+        int count = 0;
+        for(auto c : C) {
+            for(auto d : D) {
+                auto it = abSum.find(0 - c - d);
+                if(it != abSum.end()) {
+                    count += it->second;
+                }
+            }
+        }
+        return count;
+    }
+};
